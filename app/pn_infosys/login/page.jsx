@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
@@ -7,10 +8,13 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import LoaderMini from "@/app/components/Loader/LoaderMini"
 import { resetAuthState, userLogin } from "@/app/Features/Auth/AuthSlice"
+import { useRouter } from "next/navigation"
+import GuestSecurity from "@/app/components/GuestSecurity"
 
 export default function Login(props) {
 
     const dispatch = useDispatch()
+    const router = useRouter()
 
     const fields = {
         email: '',
@@ -49,7 +53,8 @@ export default function Login(props) {
     useEffect(()=>{
         if (success == true && message == 'Logged In') {
             setLoading(false)
-            setshowMessageModal(true)
+            // setshowMessageModal(true)
+            router.push('/admin/dashboard')
         }
         if (success == false) {
             setLoading(false)
@@ -63,6 +68,7 @@ export default function Login(props) {
 
     return (
         <>
+            <GuestSecurity />
             <Navbar />
 
             {/* banner starts */}

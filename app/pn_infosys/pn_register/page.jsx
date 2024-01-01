@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import LoaderMini from "@/app/components/Loader/LoaderMini"
 import { registerUser, resetAuthState } from "@/app/Features/Auth/AuthSlice"
+import GuestSecurity from "@/app/components/GuestSecurity"
 
 export default function PnRegister(props) {
 
@@ -71,6 +72,7 @@ export default function PnRegister(props) {
 
     return (
         <>
+            <GuestSecurity />
             <Navbar />
 
             {/* banner starts */}

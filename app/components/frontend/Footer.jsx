@@ -9,7 +9,8 @@ const Footer = () => {
                 <div className="container text-white">
                     <div className="row">
                         <div className="col-md-4 mt-5">
-                            <img src="/pninfosysFooterLogo.png" className='w-100 bg-white p-1 rounded' alt="" /><br /><br />
+                            {/* <img src="/pninfosysFooterLogo.png" className='w-100 bg-white p-1 rounded' alt="" /><br /><br /> */}
+                            <img src="/pninfosysFooterLogo.png" className='w-100 p-1 rounded' alt="" /><br /><br />
                             <div className='text-justify'>PN INFOSYS is a leading global business consulting and IT service company. We provides a full range of maintenance and compliance services for Government and Commercial facilities both large and small. Whether you need to run your business more efficiently or accelerate revenue growth, PN INFOSYS can get you there.</div>
                             <div className='d-flex flex-nowrap align-items-center justify-content-center gap-3'>
                                 <Link href='https://www.facebook.com/pninfosys/' className='text-decoration-none text-white fs-1'><i className="fa-brands fa-facebook"></i></Link>
