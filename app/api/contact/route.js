@@ -11,7 +11,7 @@ export async function POST(req) {
 
 export async function GET() {
     await connectMongoDB();
-    const contacts = await Contact.find()
+    const contacts = await Contact.find().sort({ _id: -1 })
     return NextResponse.json({ contacts }, { status: 200 })
 }
 

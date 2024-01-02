@@ -56,6 +56,6 @@ export async function POST(req) {
 
 export async function GET() {
     await connectMongoDB();
-    const eventImages = await EventImage.find()
+    const eventImages = await EventImage.find().sort({ _id: -1 })
     return NextResponse.json({ eventImages }, { status: 200 })
 }

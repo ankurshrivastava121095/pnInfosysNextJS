@@ -11,6 +11,6 @@ export async function POST(req) {
 
 export async function GET() {
     await connectMongoDB();
-    const workshops = await Workshop.find()
+    const workshops = await Workshop.find().sort({ _id: -1 })
     return NextResponse.json({ workshops }, { status: 200 })
 }

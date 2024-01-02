@@ -7,7 +7,7 @@ export async function GET(req,  {params}) {
     const { id } = params;
     await connectMongoDB();
     const event = await Event.findOne({ _id: id })
-    const eventImages = await EventImage.find({ eventId: id })
+    const eventImages = await EventImage.find({ eventId: id }).sort({ _id: -1 })
     return NextResponse.json({ event, eventImages }, { status: 200 })
 }
 

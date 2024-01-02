@@ -56,6 +56,6 @@ export async function POST(req) {
 
 export async function GET() {
     await connectMongoDB();
-    const placements = await Placement.find()
+    const placements = await Placement.find().sort({ _id: -1 })
     return NextResponse.json({ placements }, { status: 200 })
 }
