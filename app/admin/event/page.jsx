@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import LoaderLarge from '@/app/components/Loader/LoaderLarge'
 import { createEvent, deleteEvent, getEvent, getEvents, resetEventState, updateEvent } from '@/app/Features/Event/EventSlice'
 import LoaderMini from '@/app/components/Loader/LoaderMini'
+import { createEventImage, resetEventImageState } from '@/app/Features/EventImage/EventImageSlice'
+import Link from 'next/link'
 
 const EventList = () => {
 
@@ -25,9 +27,11 @@ const EventList = () => {
     const [data, setData] = useState([]);
     const [showAddStudentModal, setShowAddStudentModal] = useState(false)
     const [showMessageModal, setshowMessageModal] = useState(false)
+    const [showAddImageMessageModal, setshowAddImageMessageModal] = useState(false)
     const [showAddImageModal, setShowAddImageModal] = useState(false)
 
     const { events, responseStatus, responseMessage } = useSelector((state) => state.events)
+    const { eventImages: eventImagesFromStore, responseStatus: eventImagesStatus, responseMessage: eventImagesMessage } = useSelector((state) => state.eventImages)
 
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -90,11 +94,6 @@ const EventList = () => {
         setShowAddImageModal(true)
     }
 
-    const handleEventImages = (e) => {
-        const files = e.target.files;
-        setEventImages(files);
-    }
-
     const handleEventImagesSubmit = (e) => {
         e.preventDefault()
         setIsLoading(true)
@@ -103,7 +102,7 @@ const EventList = () => {
         formdata.set('eventId', eventId)
         formdata.set('eventImage', eventImages)
 
-        // dispatch(createEve(formdata));
+        dispatch(createEventImage(formdata));
     }
 
     const handleEdit = (id) => {
@@ -117,6 +116,12 @@ const EventList = () => {
         setEventId('')
         setIsUpdating(false)
         fetchEvents()
+    };
+
+    const closeAddImageModal = () => {
+        dispatch(resetEventImageState());
+        setshowAddImageMessageModal(false);
+        setEventId('')
     };
 
     useEffect(()=>{
@@ -150,6 +155,18 @@ const EventList = () => {
             setshowMessageModal(true)
         }
     },[responseStatus,responseMessage])
+
+    useEffect(()=>{
+        if ((eventImagesStatus == 'success' && eventImagesMessage == 'Event Image created successfully')) {
+            setIsLoading(false)
+            setShowAddImageModal(false)
+            setshowAddImageMessageModal(true)
+        }
+        if ((eventImagesStatus == 'rejected')) {
+            setIsLoading(false)
+            setshowAddImageMessageModal(true)
+        }
+    },[eventImagesStatus,eventImagesMessage])
 
     return (
         <>
@@ -193,6 +210,7 @@ const EventList = () => {
                                                         <td>{val?.eventTitle}</td>
                                                         <td>{val?.eventShortDescription}</td>
                                                         <td className='d-flex align-items-center gap-3'>
+                                                            <Link href={`/admin/eventImages/${val?._id}`} type='button' className='btn btn-sm btn-custom' title='Show Images'><i className="fa-solid fa-images"></i></Link>
                                                             <button type='button' className='btn btn-sm btn-custom' title='Add Image' onClick={() => handleImageModal(val?._id)}><i className="fa-regular fa-image"></i></button>
                                                             <button type='button' className='btn btn-sm btn-custom' title='Edit' onClick={() => handleEdit(val?._id)}><i className="fa-solid fa-pen-to-square"></i></button>
                                                         </td>
@@ -215,7 +233,7 @@ const EventList = () => {
                 </div>
             </div>
 
-            {/* add event modal */}
+            {/* add event modal */} 
             <div
                 className={`modal fade${showAddStudentModal ? ' show' : ''}`}
                 tabIndex="-1"
@@ -275,8 +293,7 @@ const EventList = () => {
                             <input 
                                 type="file"
                                 className='form-control form-control-sm'
-                                onChange={handleEventImages} 
-                                multiple
+                                onChange={(e) => setEventImages(e.target.files[0])}
                             />
                         </div>
                         <div className="modal-footer">
@@ -320,6 +337,43 @@ const EventList = () => {
                                 type="button"
                                 className={`btn btn-${responseStatus == 'success' ? 'success' : 'danger'} btn-sm`}
                                 onClick={closeModal}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Add Image Success Modal */}
+            <div
+                className={`modal fade${showAddImageMessageModal ? ' show' : ''}`}
+                tabIndex="-1"
+                role="dialog"
+                style={{ display: showAddImageMessageModal ? 'block' : 'none' }}
+            >
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div className="modal-content">
+                        <div className="modal-header justify-content-center">
+                            <div className="modal-title" id="successModalLabel">
+                                <div className={`${eventImagesStatus == 'success' ? 'success' : 'failed'}-icon`}>
+                                    {
+                                        eventImagesStatus == 'success' ?
+                                        <i className="fa-solid fa-thumbs-up"></i>
+                                        :
+                                        <i className="fa-solid fa-triangle-exclamation"></i>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-body">
+                            <div className="fs-4 text-center">{eventImagesMessage}</div>
+                        </div>
+                        <div className="modal-footer justify-content-center">
+                            <button
+                                type="button"
+                                className={`btn btn-${eventImagesStatus == 'success' ? 'success' : 'danger'} btn-sm`}
+                                onClick={closeAddImageModal}
                             >
                                 Close
                             </button>

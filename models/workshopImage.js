@@ -7,10 +7,7 @@ const workshopImageSchema = new Schema(
             type : mongoose.Schema.Types.ObjectId,
             ref: 'Workshop',
         },
-        workshopImage: {
-            url: String,
-            public_id: String
-        },
+        workshopImage: String,
     },
     {
         timestamps: true,

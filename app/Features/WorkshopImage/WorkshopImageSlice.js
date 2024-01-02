@@ -25,9 +25,9 @@ export const createWorkshopImage = createAsyncThunk(
 
 export const getWorkshopImages = createAsyncThunk(
     "workshopImages/getWorkshopImages",
-    async () => {
+    async (workshopImageId, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${baseURL}/workshopImage`);
+            const response = await axios.get(`${baseURL}/workshopImage/${workshopImageId}`);
             return response?.data?.workshopImages;
         } catch (error) {
             return error.response.data.message;

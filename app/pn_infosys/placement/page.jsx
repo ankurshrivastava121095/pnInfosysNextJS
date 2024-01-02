@@ -1,11 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 'use client'
+import { getPlacements } from '@/app/Features/Placement/PlacementSlice'
+import LoaderLarge from '@/app/components/Loader/LoaderLarge'
 import Footer from '@/app/components/frontend/Footer'
 import Navbar from '@/app/components/frontend/Navbar'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Placement = () => {
+
+    const dispatch = useDispatch()
+
+    const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    const { placements, responseStatus, responseMessage } = useSelector((state) => state.placements)
+
+    useEffect(()=>{
+        dispatch(getPlacements())
+    },[])
+
+    useEffect(()=>{
+        if ((responseStatus == 'success' && responseMessage == '')) {
+            setIsLoading(false)
+            setData(placements)
+        }
+    },[responseStatus,responseMessage])
+
     return (
         <>
             <Navbar />
@@ -24,15 +47,22 @@ const Placement = () => {
             <div className="container mt-4 mb-4">
                 <div className='fs-1 text-center'>OUR PLACED STUDENTS</div>
                 <div className="row">
-                    <div className="col-md-3 mt-4">
-                        <div className='card-body-custom'>
-                            <center>
-                                <img src="https://firebasestorage.googleapis.com/v0/b/pn-images.appspot.com/o/traning%2Fcase3.jpg?alt=media&token=cc2f60c1-f87a-4c58-8106-93094e670db5" className='rounded max-width-100 max-height-250px' alt="" />
-                                <div className='fs-4 my-3'>Student Name</div>
-                                <div>Student Name placed in Company Name as a Full Stack Developer</div>
-                            </center>
-                        </div>
-                    </div>
+                    {
+                        isLoading ?
+                        <LoaderLarge />
+                        :
+                        Array?.isArray(data) && data?.map((val,key)=>(
+                            <div key={key} className="col-md-3 mt-4">
+                                <div className='card-body-custom'>
+                                    <center>
+                                        <img src={`/upload/${val?.studentImage}`} className='rounded max-width-100 max-height-250px' alt="" />
+                                        <div className='fs-4 mt-3 mb-1'>{val?.studentName}</div>
+                                        <div>PNINFOSYS congratulates {val?.studentName} to get placed in {val?.companyName} as a {val?.designation}</div>
+                                    </center>
+                                </div>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
             {/* section 1 ends */}

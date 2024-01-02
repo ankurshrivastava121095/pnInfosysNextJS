@@ -1,5 +1,7 @@
+'use client'
 import React from 'react'
 import TwoStepBreadcrumbs from '../AdminComponents/BreadCrumbs/TwoStepBreadcrumbs'
+import Link from 'next/link'
 
 const Dashboard = () => {
     return (
@@ -9,8 +11,48 @@ const Dashboard = () => {
                 <small>Dashboard</small>
             </div>
             <div className='bodySection'>
-                <div className='fs-3'>Collapsed Sidebar</div>
-                <div>Click on the hamburger menu/bar icon to open the sidebar, and push this content to the right.</div>
+                <div className='row'>
+                    <div className="col-md-3">
+                        <Link href='/admin/placement' className='text-white text-decoration-none'>
+                            <div className='bg-dash-boxes py-2 my-2'>
+                                <center>
+                                    <i className="fa-solid fa-thumbs-up fs-2"></i>
+                                    <div className='fs-5'>Placement</div>
+                                </center>
+                            </div>
+                        </Link>
+                    </div>
+                    <div className="col-md-3">
+                        <Link href='/admin/workshop' className='text-white text-decoration-none'>
+                            <div className='bg-dash-boxes py-2 my-2'>
+                                <center>
+                                    <i className="fa-solid fa-person-chalkboard fs-2"></i>
+                                    <div className='fs-5'>Workshop</div>
+                                </center>
+                            </div>
+                        </Link>
+                    </div>
+                    <div className="col-md-3">
+                        <Link href='/admin/event' className='text-white text-decoration-none'>
+                            <div className='bg-dash-boxes py-2 my-2'>
+                                <center>
+                                    <i className="fa-solid fa-calendar-days fs-2"></i>
+                                    <div className='fs-5'>Event</div>
+                                </center>
+                            </div>
+                        </Link>
+                    </div>
+                    <div className="col-md-3">
+                        <Link href='/admin/contact' className='text-white text-decoration-none'>
+                            <div className='bg-dash-boxes py-2 my-2'>
+                                <center>
+                                    <i className="fa-solid fa-message fs-2"></i>
+                                    <div className='fs-5'>Contact</div>
+                                </center>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
             </div>
         </>
     )

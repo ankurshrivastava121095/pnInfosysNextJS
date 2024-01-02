@@ -1,8 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+'use client'
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import LoaderMini from '../Loader/LoaderMini'
 
 const Navbar = () => {
+
+    const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(()=>{
+        fetch(`${process.env.NEXT_PUBLIC_API_URL_ENDPOINT}/navItems`)
+        .then((res)=>res.json())
+        .then((result)=>{
+            setIsLoading(false)
+            setData(result?.navItem)
+        })
+    },[])
+
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-nav">
@@ -32,7 +48,14 @@ const Navbar = () => {
                                     Workshop
                                 </div>
                                 <ul className="dropdown-menu">
-                                    <li><Link href={`/pn_infosys/workshop/1`} className="dropdown-item">Dummy</Link></li>
+                                    {
+                                        isLoading ?
+                                        <LoaderMini />
+                                        :
+                                        Array?.isArray(data?.workshops) && data?.workshops?.map((val,key)=>(
+                                            <li key={key}><Link href={`/pn_infosys/workshop/${val?._id}`} className="dropdown-item">{val?.workshopTitle}</Link></li>
+                                        ))
+                                    }
                                 </ul>
                             </li>
                             <li className="nav-item dropdown">
@@ -40,7 +63,14 @@ const Navbar = () => {
                                     Events
                                 </div>
                                 <ul className="dropdown-menu">
-                                    <li><Link href={`/pn_infosys/event/1`} className="dropdown-item">Dummy</Link></li>
+                                {
+                                    isLoading ?
+                                    <LoaderMini />
+                                    :
+                                    Array?.isArray(data?.events) && data?.events?.map((val,key)=>(
+                                        <li key={key}><Link href={`/pn_infosys/event/${val?._id}`} className="dropdown-item">{val?.eventTitle}</Link></li>
+                                    ))
+                                    }
                                 </ul>
                             </li>
                             <li className="nav-item">

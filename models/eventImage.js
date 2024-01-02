@@ -7,10 +7,7 @@ const eventImageSchema = new Schema(
             type : mongoose.Schema.Types.ObjectId,
             ref: 'Event',
         },
-        eventImage: {
-            url: String,
-            public_id: String
-        },
+        eventImage: String,
     },
     {
         timestamps: true,

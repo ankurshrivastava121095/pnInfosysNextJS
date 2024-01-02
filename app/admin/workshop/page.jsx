@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import LoaderLarge from '@/app/components/Loader/LoaderLarge'
 import { createWorkshop, deleteWorkshop, getWorkshop, getWorkshops, resetWorkshopState, updateWorkshop } from '@/app/Features/Workshop/WorkshopSlice'
 import LoaderMini from '@/app/components/Loader/LoaderMini'
+import { createWorkshopImage, resetWorkshopImageState } from '@/app/Features/WorkshopImage/WorkshopImageSlice'
+import Link from 'next/link'
 
 const WorkshopList = () => {
 
@@ -18,14 +20,18 @@ const WorkshopList = () => {
     }
 
     const [postData, setPostData] = useState(fields)
+    const [workshopImages, setWorkshopImages] = useState()
     const [isUpdating, setIsUpdating] = useState(false)
     const [workshopId, setWorkshopId] = useState('')
     const [isLoading, setIsLoading] = useState(true)    
     const [data, setData] = useState([]);
     const [showAddStudentModal, setShowAddStudentModal] = useState(false)
     const [showMessageModal, setshowMessageModal] = useState(false)
+    const [showAddImageMessageModal, setshowAddImageMessageModal] = useState(false)
+    const [showAddImageModal, setShowAddImageModal] = useState(false)
 
     const { workshops, responseStatus, responseMessage } = useSelector((state) => state.workshops)
+    const { workshopImages: workshopImagesFromStore, responseStatus: workshopImagesStatus, responseMessage: workshopImagesMessage } = useSelector((state) => state.workshopImages)
 
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -83,6 +89,22 @@ const WorkshopList = () => {
         }
     }
 
+    const handleImageModal = (id) => {
+        setWorkshopId(id)
+        setShowAddImageModal(true)
+    }
+
+    const handleWorkshopImagesSubmit = (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+
+        const formdata = new FormData()
+        formdata.set('workshopId', workshopId)
+        formdata.set('workshopImage', workshopImages)
+
+        dispatch(createWorkshopImage(formdata));
+    }
+
     const handleEdit = (id) => {
         setIsLoading(true)
         dispatch(getWorkshop(id))
@@ -94,6 +116,12 @@ const WorkshopList = () => {
         setWorkshopId('')
         setIsUpdating(false)
         fetchWorkshops()
+    };
+
+    const closeAddImageModal = () => {
+        dispatch(resetWorkshopImageState());
+        setshowAddImageMessageModal(false);
+        setWorkshopId('')
     };
 
     useEffect(()=>{
@@ -127,6 +155,18 @@ const WorkshopList = () => {
             setshowMessageModal(true)
         }
     },[responseStatus,responseMessage])
+
+    useEffect(()=>{
+        if ((workshopImagesStatus == 'success' && workshopImagesMessage == 'Workshop Image created successfully')) {
+            setIsLoading(false)
+            setShowAddImageModal(false)
+            setshowAddImageMessageModal(true)
+        }
+        if ((workshopImagesStatus == 'rejected')) {
+            setIsLoading(false)
+            setshowAddImageMessageModal(true)
+        }
+    },[workshopImagesStatus,workshopImagesMessage])
 
     return (
         <>
@@ -170,9 +210,9 @@ const WorkshopList = () => {
                                                         <td>{val?.workshopTitle}</td>
                                                         <td>{val?.workshopShortDescription}</td>
                                                         <td className='d-flex align-items-center gap-3'>
-                                                            <button type='button' className='btn btn-sm btn-custom' title='Add Image' onClick={() => handleDelete(val?._id)}><i className="fa-regular fa-image"></i></button>
+                                                            <Link href={`/admin/workshopImages/${val?._id}`} type='button' className='btn btn-sm btn-custom' title='Show Images'><i className="fa-solid fa-images"></i></Link>
+                                                            <button type='button' className='btn btn-sm btn-custom' title='Add Image' onClick={() => handleImageModal(val?._id)}><i className="fa-regular fa-image"></i></button>
                                                             <button type='button' className='btn btn-sm btn-custom' title='Edit' onClick={() => handleEdit(val?._id)}><i className="fa-solid fa-pen-to-square"></i></button>
-                                                            <button type='button' className='btn btn-sm btn-custom' title='Delete' onClick={() => handleDelete(val?._id)}><i className="fa-solid fa-trash-can"></i></button>
                                                         </td>
                                                     </tr>
                                                 ))
@@ -193,7 +233,7 @@ const WorkshopList = () => {
                 </div>
             </div>
 
-            {/* add student modal */}
+            {/* add workshop modal */}
             <div
                 className={`modal fade${showAddStudentModal ? ' show' : ''}`}
                 tabIndex="-1"
@@ -236,6 +276,38 @@ const WorkshopList = () => {
                 </div>
             </div>
 
+            {/* add event image modal */}
+            <div
+                className={`modal fade${showAddImageModal ? ' show' : ''}`}
+                tabIndex="-1"
+                role="dialog"
+                style={{ display: showAddImageModal ? 'block' : 'none' }}
+            >
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Add Workshop Images</h1>
+                            <button type="button" className="btn-close" onClick={() => setShowAddImageModal(false)}></button>
+                        </div>
+                        <div className="modal-body">
+                            <input 
+                                type="file"
+                                className='form-control form-control-sm'
+                                onChange={(e) => setWorkshopImages(e.target.files[0])}
+                            />
+                        </div>
+                        <div className="modal-footer">
+                            {
+                                isLoading ?
+                                <LoaderMini />
+                                :
+                                <button type="button" className="btn btn-custom btn-sm" onClick={handleWorkshopImagesSubmit}>Save</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Success Modal */}
             <div
                 className={`modal fade${showMessageModal ? ' show' : ''}`}
@@ -265,6 +337,43 @@ const WorkshopList = () => {
                                 type="button"
                                 className={`btn btn-${responseStatus == 'success' ? 'success' : 'danger'} btn-sm`}
                                 onClick={closeModal}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Add Image Success Modal */}
+            <div
+                className={`modal fade${showAddImageMessageModal ? ' show' : ''}`}
+                tabIndex="-1"
+                role="dialog"
+                style={{ display: showAddImageMessageModal ? 'block' : 'none' }}
+            >
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div className="modal-content">
+                        <div className="modal-header justify-content-center">
+                            <div className="modal-title" id="successModalLabel">
+                                <div className={`${workshopImagesStatus == 'success' ? 'success' : 'failed'}-icon`}>
+                                    {
+                                        workshopImagesStatus == 'success' ?
+                                        <i className="fa-solid fa-thumbs-up"></i>
+                                        :
+                                        <i className="fa-solid fa-triangle-exclamation"></i>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-body">
+                            <div className="fs-4 text-center">{workshopImagesMessage}</div>
+                        </div>
+                        <div className="modal-footer justify-content-center">
+                            <button
+                                type="button"
+                                className={`btn btn-${workshopImagesStatus == 'success' ? 'success' : 'danger'} btn-sm`}
+                                onClick={closeAddImageModal}
                             >
                                 Close
                             </button>

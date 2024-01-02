@@ -156,8 +156,17 @@ export default function Home(props) {
             <div className='card-body-custom'>
               <center>
                 <img src="https://firebasestorage.googleapis.com/v0/b/pn-images.appspot.com/o/home-%3Eclient%2Fe2.jpg?alt=media&token=858212a2-77c6-4932-9a26-06eeccb44168" className='rounded max-width-100 max-height-250px' alt="" />
-                <div className='fs-4 my-3'>Workshop by Senior Advisor</div>
-                <div>Workshop was enacted by Vaibhav Shrivastava, who is Product Owner at Xiaomi , China. He is our Senior Advisor, he conducted the workhop in which he holistically motivated the team of PN INFOSYS.</div>
+                <div className='fs-4 mt-3 mb-1'>PNINFOSYS invited as Chief Guest</div>
+                <div>Rustamji Institute of Technology, BSF Academy, Tekanpur invited PN INFOSYS as a Cheif Guest in their Software Tech-Fest. Rustamji Institute of Technology.</div>
+              </center>
+            </div>
+          </div>
+          <div className="col-md-4 mt-4">
+            <div className='card-body-custom'>
+              <center>
+                <img src="https://firebasestorage.googleapis.com/v0/b/pn-images.appspot.com/o/home-%3Eclient%2Fe5.jpg?alt=media&token=1a40c8b1-c469-48b6-b0ad-608edae9543c" className='rounded max-width-100 max-height-250px' alt="" />
+                <div className='fs-4 mt-1'>New Branch opening in Indore</div>
+                <div>PN INFOSYS has a new branch in Indore also. It was a grand launch of our new branch in Indore. We are thrilled to announce the grand launch of PN INFOSYS newest branch in the vibrant city of Indore. This marks a significant milestone in our journey.</div>
               </center>
             </div>
           </div>

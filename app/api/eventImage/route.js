@@ -1,6 +1,6 @@
 import { writeFile } from 'fs/promises'
 import connectMongoDB from "@/libs/mongodb"
-import WorkshopImage from "@/models/workshopImage";
+import EventImage from "@/models/eventImage";
 import { NextResponse } from "next/server";
 import { promises as fsPromises } from 'fs';
 const fs = require('fs').promises;
@@ -15,7 +15,7 @@ export async function POST(req) {
     formDataArray.forEach(({ name, value }) => {
         extractedData[name] = value;
     });
-    const file = data.get('workshopImage')
+    const file = data.get('eventImage')
     await connectMongoDB();
 
     if (!file) {
@@ -38,15 +38,15 @@ export async function POST(req) {
         await fs.writeFile(filePath, buffer);
 
         try {
-            const { workshopId } = extractedData;
-            const dataSaved = await WorkshopImage.create({ 
-                workshopId: workshopId,  
-                workshopImage: newFileName 
+            const { eventId } = extractedData;
+            const dataSaved = await EventImage.create({ 
+                eventId: eventId,  
+                eventImage: newFileName 
             });
             if (dataSaved) {
-                return NextResponse.json({ message: 'Workshop Image created Successfully !' }, { status: 201 })
+                return NextResponse.json({ message: 'Event Image created Successfully !' }, { status: 201 })
             } else {
-                return NextResponse.json({ message: 'Image saved but Workshop Image not Save !' }, { status: 401 })
+                return NextResponse.json({ message: 'Image saved but Event Image not Save !' }, { status: 401 })
             }
         } catch (error) {
             return NextResponse.json({ message: error }, { status: 401 })
@@ -56,6 +56,6 @@ export async function POST(req) {
 
 export async function GET() {
     await connectMongoDB();
-    const workshopImages = await WorkshopImage.find()
-    return NextResponse.json({ workshopImages }, { status: 200 })
+    const eventImages = await EventImage.find()
+    return NextResponse.json({ eventImages }, { status: 200 })
 }

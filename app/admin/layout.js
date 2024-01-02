@@ -72,8 +72,6 @@ export default function AdminLayout({ children }) {
                                     {loggedInUser?.firstName} {loggedInUser?.lastName}
                                 </button>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" href="/admin/generalSettings">General Settings</Link></li>
-                                    <li><Link className="dropdown-item" href="/admin/changePassword">Change Password</Link></li>
                                     <li><span role='button' className="dropdown-item" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i> Logout</span></li>
                                 </ul>
                             </div> 

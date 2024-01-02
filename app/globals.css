@@ -95,6 +95,13 @@
     color: #fff !important;
 }
 
+.bg-dash-boxes {
+    background: rgb(0,157,242);
+    background: linear-gradient(11deg, rgba(0,157,242,1) 0%, rgba(15,99,147,1) 75%);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 @media screen and (max-width: 767px) {
     .bg-banner {
         height: 50vh;
