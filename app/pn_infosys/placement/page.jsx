@@ -51,6 +51,7 @@ const Placement = () => {
                         isLoading ?
                         <LoaderLarge />
                         :
+                        data?.length > 0 ?
                         Array?.isArray(data) && data?.map((val,key)=>(
                             <div key={key} className="col-md-3 mt-4">
                                 <div className='card-body-custom'>
@@ -62,6 +63,8 @@ const Placement = () => {
                                 </div>
                             </div>
                         ))
+                        :
+                        <><center><div className='my-3'>No Record</div></center></>
                     }
                 </div>
             </div>
