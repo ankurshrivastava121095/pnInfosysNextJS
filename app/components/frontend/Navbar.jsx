@@ -47,13 +47,13 @@ const Navbar = () => {
                                 <div className="nav-link text-white dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Workshop
                                 </div>
-                                <ul className="dropdown-menu">
+                                <ul className="dropdown-menu dropdown-menu-custom">
                                     {
                                         isLoading ?
                                         <LoaderMini />
                                         :
                                         Array?.isArray(data?.workshops) && data?.workshops?.map((val,key)=>(
-                                            <li key={key}><Link href={`/pn_infosys/workshop/${val?._id}`} className="dropdown-item">{val?.workshopTitle}</Link></li>
+                                            <li key={key}><Link href={`/pn_infosys/workshop/${val?._id}`} className="dropdown-item dropdown-item-custom">{val?.workshopTitle}</Link></li>
                                         ))
                                     }
                                 </ul>
@@ -62,13 +62,13 @@ const Navbar = () => {
                                 <div className="nav-link text-white dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Events
                                 </div>
-                                <ul className="dropdown-menu">
+                                <ul className="dropdown-menu dropdown-menu-custom">
                                 {
                                     isLoading ?
                                     <LoaderMini />
                                     :
                                     Array?.isArray(data?.events) && data?.events?.map((val,key)=>(
-                                        <li key={key}><Link href={`/pn_infosys/event/${val?._id}`} className="dropdown-item">{val?.eventTitle}</Link></li>
+                                        <li key={key}><Link href={`/pn_infosys/event/${val?._id}`} className="dropdown-item dropdown-item-custom">{val?.eventTitle}</Link></li>
                                     ))
                                     }
                                 </ul>

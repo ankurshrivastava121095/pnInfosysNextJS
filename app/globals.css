@@ -102,6 +102,22 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.dropdown-menu-custom {
+    background: #0f639382 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px !important;
+}
+
+.dropdown-item-custom {
+    color: #fff !important;
+}
+
+.dropdown-item-custom:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
 @media screen and (max-width: 767px) {
     .bg-banner {
         height: 50vh;
